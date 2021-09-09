@@ -1,21 +1,25 @@
-# Standard imports
 import cv2
 import numpy as np
 
+# Read in the image in grayscale
+img = cv2.imread('30-legos.jpg', cv2.IMREAD_GRAYSCALE)
 
-# Read image
-im = cv2.imread("blob.jpg", cv2.IMREAD_GRAYSCALE)
 
-# Set up the detector with default parameters.
-detector = cv2.SimpleBlobDetector()
+# Determine which openCV version were using
+if cv2.__version__.startswith('2.'):
+    detector = cv2.SimpleBlobDetector()
+else:
+    detector = cv2.SimpleBlobDetector_create()
 
-# Detect blobs.
-keypoints = detector.detect(im)
+# Detect the blobs in the image
+keypoints = detector.detect(img)
+print(len(keypoints))
 
-# Draw detected blobs as red circles.
-# cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
-im_with_keypoints = cv2.drawKeypoints(im, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+# Draw detected keypoints as red circles
+imgKeyPoints = cv2.drawKeypoints(img, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-# Show keypoints
-cv2.imshow("Keypoints", im_with_keypoints)
-cv2.waitKey(0;;
+# Display found keypoints
+cv2.imshow("Keypoints", imgKeyPoints)
+cv2.waitKey(0)
+
+cv2.destroyAllWindows()
